@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 
 const Navegacion = () => {
+
+    const [salir, setSalir] = useState(false);
+
+    const cerrarSesion = (evento) => {
+
+    }
+
+    const verificaLogin = () => {
+        setSalir(true);
+    }
+
+    useEffect(() => {
+        verificaLogin();
+    }, []);
 
     return (
         <div class="container">
@@ -10,9 +24,15 @@ const Navegacion = () => {
                         <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
                     </a>
                 </div>
-                <div class="col-md-3 text-end">
-                    <button type="button" class="btn btn-dark">Salir</button>
-                </div>
+                {
+                    salir ? (
+                       null
+                    ) : (
+                        <div class="col-md-3 text-end">
+                            <button type="button" class="btn btn-dark">Salir</button>
+                        </div>
+                    )
+                }
             </header>
         </div>
     );
