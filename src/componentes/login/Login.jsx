@@ -2,9 +2,11 @@ import React, { useState,useEffect } from 'react';
 import { cifrar, descifrar } from '../../services/cifrar';
 import axios from 'axios';
 import Cargando from '../cargando/Cargando';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
+    const navegar = useNavigate();
     const [usuario, setUsuario] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [cargando, setcargando] = useState(false);
@@ -30,6 +32,7 @@ function Login() {
             cifrar(response.data.token,'token')
             cifrar(JSON.stringify(response.data.permisos),'permisos')
             setcargando(false);
+            navegar('/home');
         })
         .catch(error => {
             alert('Hubo un error en el server');
