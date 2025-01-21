@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { cifrar, descifrar } from '../../services/cifrar';
 
 function Login() {
     const [usuario, setUsuario] = useState('');
@@ -12,8 +13,7 @@ function Login() {
         setContrasena(e.target.value);
     };
 
-    const iniciarSesion = (e) => {
-        e.preventDefault();
+    const iniciarSesion = () => {
         alert(`Usuario: ${usuario}, Contraseña: ${contrasena}`);
     };
 
