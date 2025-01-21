@@ -4,6 +4,9 @@ const Home = () => {
 
     return (
         <div className="container mt-5">
+            <div className='mb-3'>
+                <button type="button" className="btn btn-primary">Agregar Datos</button>
+            </div>
             <div className="row justify-content-center">
                 <table className="table">
                     <thead>
@@ -35,6 +38,15 @@ const Home = () => {
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                </ul>
+            </nav>
         </div>
     );
 };

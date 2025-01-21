@@ -11,7 +11,7 @@ const Navegacion = () => {
                     </a>
                 </div>
                 <div class="col-md-3 text-end">
-                    <button type="button" class="btn btn-primary">Salir</button>
+                    <button type="button" class="btn btn-dark">Salir</button>
                 </div>
             </header>
         </div>
