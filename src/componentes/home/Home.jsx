@@ -1,11 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+
+    const navegar = useNavigate();
+
+    const agregar = () => {
+        navegar('/agregar-poblacion');
+    }
 
     return (
         <div className="container mt-5">
             <div className='mb-3'>
-                <button type="button" className="btn btn-primary">Agregar Datos</button>
+                <button type="button" className="btn btn-primary" onClick={agregar}>Agregar Datos</button>
             </div>
             <div className="row justify-content-center">
                 <table className="table">
