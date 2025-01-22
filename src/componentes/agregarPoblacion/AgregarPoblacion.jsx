@@ -50,7 +50,7 @@ function AgregarPoblacion() {
                 <p className="mb-3 text-muted">
                     Arrastra y suelta tu archivo aquí, o haz clic para seleccionarlo.
                 </p>
-                <label className="btn btn-primary">
+                <label className="btn btn-secondary">
                     Seleccionar Archivo
                     <input type="file" onChange={inputCarga} className="d-none"/>
                 </label>
@@ -58,9 +58,14 @@ function AgregarPoblacion() {
             <div className="mt-4">
                 <h4>Archivo seleccionado</h4>
                 {archivo ? (
-                    <ul className="list-group">
-                        <li className="list-group-item">{archivo.name}</li>
-                    </ul>
+                   <div>
+                        <ul className="list-group">
+                            <li className="list-group-item">{archivo.name}</li>
+                        </ul>
+                        <button className="btn btn-primary mt-4">
+                            Subir Archivo
+                        </button>
+                   </div>
                 ) : (
                     null
                 )}
