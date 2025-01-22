@@ -1,20 +1,23 @@
 import React, { useState,useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Navegacion = () => {
 
-    const [salir, setSalir] = useState(true);
+    const [salir, setSalir] = useState(false);
+    const navegar = useNavigate();
 
     const cerrarSesion = (evento) => {
-       console.log("cerrarSesion");
-       console.log(evento);
-    }
-
-    const verificaLogin = () => {
-        setSalir(true);
+        console.log("cerrarSesion");
+        console.log(evento);
+        localStorage.removeItem("token");
+        localStorage.removeItem("permisos");
+        setSalir(false);
+        navegar('/');
     }
 
     useEffect(() => {
-        verificaLogin();
+        console.log("useEffect Navegacion");
+        localStorage.getItem("token") ? setSalir(true) : setSalir(false);
     }, []);
 
     return (
