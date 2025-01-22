@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { descifrar } from '../../services/cifrar';
 
 const Navegacion = () => {
 
@@ -16,8 +17,8 @@ const Navegacion = () => {
     }
 
     useEffect(() => {
-        console.log("useEffect Navegacion");
-        localStorage.getItem("token") ? setSalir(true) : setSalir(false);
+        console.log("useEffect navegacion");
+        descifrar('token') ? setSalir(true) : setSalir(false);
     }, []);
 
     return (

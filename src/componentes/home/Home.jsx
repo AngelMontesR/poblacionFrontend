@@ -8,9 +8,11 @@ const Home = () => {
     const navegar = useNavigate();
     const [cargando, setcargando] = useState(false);
     const [poblacion, setPoblacion] = useState({ data: [], links: [] });
+    const [permisos, setPermisos] = useState([]);
 
     useEffect(() => {
         consultaPoblacion();
+        verificarPermisos();
     }, []);
 
     const consultaPoblacion = () => {
@@ -33,6 +35,10 @@ const Home = () => {
         });
     };
 
+    const verificarPermisos = () => {
+        setPermisos(descifrar('permisos'));
+    };
+
     const agregar = () => {
         navegar('/agregar-poblacion');
     };
@@ -43,9 +49,13 @@ const Home = () => {
                 <Cargando />
             ) : (
                 <div className='container'>
-                    <div className='mb-3'>
-                        <button type="button" className="btn btn-primary" onClick={agregar}>Agregar Datos</button>
-                    </div>
+                    {
+                        permisos.includes('poblacion.carga') ? (
+                            <div className='mb-3'>
+                                <button type="button" className="btn btn-primary" onClick={agregar}>Agregar Datos</button>
+                            </div>
+                        ) : null
+                    }
                     <div className="row justify-content-center">
                         <table className="table">
                             <thead>
@@ -54,7 +64,7 @@ const Home = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {poblacion.data.length > 0 ? (
+                                {poblacion.data.data > 0 ? (
                                     poblacion.data.map((persona) => (
                                         <tr key={persona.id}>
                                             <th scope="row">
