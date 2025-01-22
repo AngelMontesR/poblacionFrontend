@@ -1,6 +1,6 @@
 # Proyecto React
 
-Este es un proyecto desarrollado con React. A continuación, se indican los pasos para configurar y ejecutar el proyecto en tu entorno local. El proyecto requiere que el backend esté corriendo en `VITE_API_URL=http://localhost:8000` para que las comunicaciones entre el frontend y el backend funcionen correctamente.
+Este es un proyecto desarrollado con React. A continuación, se indican los pasos para configurar y ejecutar el proyecto en tu entorno local. El proyecto requiere que el backend esté corriendo en `http://localhost:8000` para que las comunicaciones entre el frontend y el backend funcionen correctamente.
 
 ## Requisitos
 
