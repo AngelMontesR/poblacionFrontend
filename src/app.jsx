@@ -5,6 +5,7 @@ import Home from './componentes/home/Home';
 import AgregarPoblacion from './componentes/agregarPoblacion/AgregarPoblacion';
 import ProtectRuta from './componentes/utils/ProtectRuta';
 import Navegacion from './componentes/navegacion/Navegacion';
+import Footer from './componentes/footer/Footer';
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/agregar-poblacion" element={<AgregarPoblacion />} />
                 </Route>
             </Routes>
+        <Footer />
         </BrowserRouter>
     );
 }

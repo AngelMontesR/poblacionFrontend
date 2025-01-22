@@ -9,9 +9,15 @@ const Home = () => {
     const [cargando, setcargando] = useState(false);
     const [poblacion, setPoblacion] = useState({ data: [], links: [] });
     const [permisos, setPermisos] = useState([]);
+    const [mostrarModal, setShowModal] = useState(false);
+    const [telefonos, setTelefonos] = useState([]);
+    const [direcciones, setDirecciones] = useState([]);
 
     useEffect(() => {
         consultaPoblacion();
+        console.log("useEffect");
+        console.log(
+        );
         verificarPermisos();
     }, []);
 
@@ -24,15 +30,14 @@ const Home = () => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then(response => {
-            setcargando(false);
-            setPoblacion(response.data);
-            console.log(response.data);
-        })
-        .catch(error => {
-            setcargando(false);
-            console.error(error);
-        });
+            .then(response => {
+                setcargando(false);
+                setPoblacion(response.data);
+            })
+            .catch(error => {
+                setcargando(false);
+                console.error(error);
+            });
     };
 
     const verificarPermisos = () => {
@@ -42,6 +47,20 @@ const Home = () => {
     const agregar = () => {
         navegar('/agregar-poblacion');
     };
+
+    const mostrarDetalle = (id) => () => {
+
+        let telefonos = [];
+        let direcciones = [];
+        let persona = poblacion.data.find(persona => persona.id == id);
+
+        telefonos = persona.telefonos;
+        direcciones = persona.direcciones;
+
+        setTelefonos(telefonos);
+        setDirecciones(direcciones);
+        setShowModal(true);
+    }
 
     return (
         <div className="mt-5">
@@ -60,18 +79,16 @@ const Home = () => {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th scope="col"></th>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Nombre</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {poblacion.data.data > 0 ? (
+                                {poblacion.data.length > 0 ? (
                                     poblacion.data.map((persona) => (
-                                        <tr key={persona.id}>
-                                            <th scope="row">
-
-
-
-                                            </th>
+                                        <tr key={persona.id} onClick={mostrarDetalle(persona.id)}>
+                                            <th scope="row">{persona.id}</th>
+                                            <td>{persona.nombre} {persona.paterno} {persona.materno}</td>
                                         </tr>
                                     ))
                                 ) : (
@@ -97,8 +114,8 @@ const Home = () => {
                                                         Authorization: `Bearer ${descifrar('token')}`,
                                                     },
                                                 })
-                                                .then(response => setPoblacion(response.data))
-                                                .catch(error => console.error(error));
+                                                    .then(response => setPoblacion(response.data))
+                                                    .catch(error => console.error(error));
                                             }
                                         }}
                                     >
@@ -108,6 +125,55 @@ const Home = () => {
                             ))}
                         </ul>
                     </nav>
+                </div>
+            )}
+
+            {mostrarModal && (
+                <div
+                    className="modal fade show"
+                    style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                >
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Detalles del Registro</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={() => setShowModal(false)}
+                                ></button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="row">
+                                    <div className="col-6">
+                                        <h5>Telefonos</h5>
+                                        <ul>
+                                            {telefonos.map(telefono => (
+                                                <li key={telefono.id}>{telefono.telefono}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    <div className="col-6">
+                                        <h5>Direcciones</h5>
+                                        <ul>
+                                            {direcciones.map(direccion => (
+                                                <li key={direccion.id}>{direccion.calle} {direccion.numero_exterior} {direccion.numero_interior} {direccion.colonia} {direccion.cp}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={() => setShowModal(false)}
+                                >
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
