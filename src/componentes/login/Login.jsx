@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { cifrar, descifrar } from '../../services/cifrar';
 import axios from 'axios';
 import Cargando from '../cargando/Cargando';
