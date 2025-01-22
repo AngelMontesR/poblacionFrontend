@@ -5,9 +5,9 @@ import { descifrar } from '../../services/cifrar';
 import Cargando from '../cargando/Cargando';
 
 const Home = () => {
-
     const navegar = useNavigate();
     const [cargando, setcargando] = useState(false);
+    const [poblacion, setPoblacion] = useState({ data: [], links: [] });
 
     useEffect(() => {
         consultaPoblacion();
@@ -15,7 +15,7 @@ const Home = () => {
 
     const consultaPoblacion = () => {
         console.log("consultaPoblacion");
-        let token = descifrar('token');
+        const token = descifrar('token');
         setcargando(true);
         axios.get(`${import.meta.env.VITE_API_URL}/obtener-poblacion`, {
             headers: {
@@ -24,6 +24,7 @@ const Home = () => {
         })
         .then(response => {
             setcargando(false);
+            setPoblacion(response.data);
             console.log(response.data);
         })
         .catch(error => {
@@ -34,60 +35,71 @@ const Home = () => {
 
     const agregar = () => {
         navegar('/agregar-poblacion');
-    }
+    };
 
     return (
         <div className="mt-5">
-            {
-                cargando ? (<Cargando />) : (
-                    <div className='container'>
-                        <div className='mb-3'>
-                            <button type="button" className="btn btn-primary" onClick={agregar}>Agregar Datos</button>
-                        </div>
-                        <div className="row justify-content-center">
-                            <table className="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nombre</th>
-                                        <th scope="col">Apellido Paterno</th>
-                                        <th scope="col">Apellido Materno</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td colSpan="2">Larry the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <nav aria-label="Page navigation example">
-                            <ul className="pagination">
-                                <li className="page-item"><a className="page-link" href="#">Anterior</a></li>
-                                <li className="page-item"><a className="page-link" href="#">1</a></li>
-                                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                                <li className="page-item"><a className="page-link" href="#">3</a></li>
-                                <li className="page-item"><a className="page-link" href="#">Siguiente</a></li>
-                            </ul>
-                        </nav>
+            {cargando ? (
+                <Cargando />
+            ) : (
+                <div className='container'>
+                    <div className='mb-3'>
+                        <button type="button" className="btn btn-primary" onClick={agregar}>Agregar Datos</button>
                     </div>
-                )
-            }
+                    <div className="row justify-content-center">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {poblacion.data.length > 0 ? (
+                                    poblacion.data.map((persona) => (
+                                        <tr key={persona.id}>
+                                            <th scope="row">
+
+
+
+                                            </th>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5" className="text-center">
+                                            No hay datos disponibles.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav>
+                        <ul className="pagination">
+                            {poblacion.links.map((link, index) => (
+                                <li key={index} className={`page-item ${link.active ? 'active' : ''}`}>
+                                    <a className="page-link"
+                                        href="#"
+                                        onClick={() => {
+                                            if (link.url) {
+                                                axios.get(link.url, {
+                                                    headers: {
+                                                        Authorization: `Bearer ${descifrar('token')}`,
+                                                    },
+                                                })
+                                                .then(response => setPoblacion(response.data))
+                                                .catch(error => console.error(error));
+                                            }
+                                        }}
+                                    >
+                                        {link.label}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
+            )}
         </div>
     );
 };
