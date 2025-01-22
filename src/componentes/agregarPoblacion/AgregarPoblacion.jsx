@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Cargando from '../cargando/Cargando';
+import { descifrar } from '../../services/cifrar';
 import './AgregarPoblacion.css';
 
 function AgregarPoblacion() {
     const navegar = useNavigate();
+    const [cargando, setcargando] = useState(false);
 
     const home = () => {
         navegar('/home');
@@ -11,9 +15,9 @@ function AgregarPoblacion() {
 
     const [archivo, setArchivo] = useState(null);
 
-    const soltar = (e) => {
-        e.preventDefault();
-        const archivosSoltados = e.dataTransfer.files;
+    const soltar = (evento) => {
+        evento.preventDefault();
+        const archivosSoltados = evento.dataTransfer.files;
         if (archivosSoltados.length > 0) {
             if(archivosSoltados[0].type != "text/csv") {
                 alert("El archivo seleccionado no es un archivo CSV");
@@ -23,8 +27,8 @@ function AgregarPoblacion() {
         }
     };
 
-    const inputCarga = (e) => {
-        const archivoSeleccionado = e.target.files[0];
+    const inputCarga = (evento) => {
+        const archivoSeleccionado = evento.target.files[0];
         if (archivoSeleccionado) {
             if(archivoSeleccionado.type != "text/csv") {
                 alert("El archivo seleccionado no es un archivo CSV");
@@ -34,12 +38,43 @@ function AgregarPoblacion() {
         }
     };
 
-    const manejarArrastreSobre = (e) => {
-        e.preventDefault();
+    const manejarArrastreSobre = (evento) => {
+        evento.preventDefault();
+    };
+
+    const cargarArchivo = () => {
+        if (archivo) {
+            setcargando(true);
+            let token = descifrar('token');
+            console.log(token);
+
+            let formulario = new FormData();
+            formulario.append('archivo', archivo);
+
+            axios.post(`${import.meta.env.VITE_API_URL}/carga-archivo`, formulario, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            .then(response => {
+                alert('Archivo cargado correctamente');
+                setcargando(false);
+                setArchivo(null);
+                console.log(response.data);
+            })
+            .catch(error => {
+                alert('Error al cargar el archivo, intente nuevamente');
+                setcargando(false);
+                console.error(error);
+            });
+        } else {
+            alert('No se ha seleccionado el archivo');
+        }
     };
 
     return (
-        <div className="container mt-5">
+        cargando ? <Cargando /> : ( <div className="container mt-5">
             <div className="d-flex justify-content-between align-items-center">
                 <button className="btn btn-secondary" onClick={home}>
                     Regresar
@@ -62,7 +97,7 @@ function AgregarPoblacion() {
                         <ul className="list-group">
                             <li className="list-group-item">{archivo.name}</li>
                         </ul>
-                        <button className="btn btn-primary mt-4">
+                        <button className="btn btn-primary mt-4" onClick={cargarArchivo}>
                             Subir Archivo
                         </button>
                    </div>
@@ -70,7 +105,7 @@ function AgregarPoblacion() {
                     null
                 )}
             </div>
-        </div>
+        </div>)
     );
 }
 
