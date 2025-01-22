@@ -11,6 +11,9 @@ function cifrar(valor,indice)
 function descifrar(indice)
 {
     const criptado = localStorage.getItem(indice);
+    if (!criptado) {
+        return null;
+    }
     const bytes = CryptoJS.AES.decrypt(criptado, clave_secreta);
     const descifrado = bytes.toString(CryptoJS.enc.Utf8);
     console.log(descifrado)

@@ -5,6 +5,7 @@ import Home from './componentes/home/Home';
 import Navegacion from './componentes/navegacion/Navegacion';
 import Footer from './componentes/footer/Footer';
 import AgregarPoblacion from './componentes/agregarPoblacion/AgregarPoblacion';
+import ProtectedRoute from './componentes/protectedRoute/ProtectedRoute';
 
 function App() {
     return (
@@ -12,8 +13,8 @@ function App() {
             <Navegacion />
                 <Routes>
                     <Route path="/" element={<Login />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/agregar-poblacion" element={<AgregarPoblacion />} />
+                    <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                    <Route path="/agregar-poblacion" element={<ProtectedRoute><AgregarPoblacion /></ProtectedRoute>} />
                 </Routes>
             <Footer />
         </Router>
